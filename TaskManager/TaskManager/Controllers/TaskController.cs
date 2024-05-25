@@ -80,6 +80,13 @@ namespace TaskManager.Controllers
                     result.success = false;
                     return BadRequest(result);
                 }
+                // بررسی اینکه فیلدهای جدید خالی نباشند
+                if (string.IsNullOrEmpty(task.Name) )
+                {
+                    result.message = "نام وظیفه نمی‌تواند خالی باشد!";
+                    result.success = false;
+                    return BadRequest(result);
+                }
 
                 existingTask.Name = task.Name;
                 existingTask.Description = task.Description;

@@ -122,6 +122,13 @@ namespace TaskManager.Controllers
                     result.success = false;
                     return BadRequest(result);
                 }
+                // بررسی اینکه فیلدهای جدید خالی نباشند
+                if (string.IsNullOrEmpty(comment.Title) || string.IsNullOrEmpty(comment.Text))
+                {
+                    result.message = "عنوان و متن نظر نمی‌توانند خالی باشند!";
+                    result.success = false;
+                    return BadRequest(result);
+                }
 
                 existingComment.Title = comment.Title;
                 existingComment.Text = comment.Text;

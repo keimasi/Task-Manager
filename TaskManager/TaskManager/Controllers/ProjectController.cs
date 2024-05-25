@@ -66,6 +66,13 @@ namespace TaskManager.Controllers
                     result.success = false;
                     return BadRequest(result);
                 }
+                // بررسی اینکه فیلدهای جدید خالی نباشند
+                if (string.IsNullOrEmpty(project.Name) )
+                {
+                    result.message = "نام پروژه نمی‌تواند خالی باشد!";
+                    result.success = false;
+                    return BadRequest(result);
+                }
 
                 existingProject.Name = project.Name;
                 existingProject.Description = project.Description;

@@ -124,6 +124,14 @@ namespace TaskManager.Controllers
                     result.success = false;
                     return BadRequest(result);
                 }
+                // بررسی اینکه فیلدهای جدید خالی نباشند
+                if (string.IsNullOrEmpty(chat.Text) )
+                {
+                    result.message = " متن پیام نمی‌تواند خالی باشد!";
+                    result.success = false;
+                    return BadRequest(result);
+                }
+                
                 existingChat.Text = chat.Text;
                 _context.SaveChanges();
         
