@@ -178,13 +178,13 @@ namespace TaskManager.Controllers
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            var CreatedUser = await _context.Users.FirstOrDefaultAsync(x=> x.UserName==model.UserName);
+            var createdUser = await _context.Users.FirstOrDefaultAsync(x=> x.UserName==model.UserName);
             
             // ایجاد Claims
             var claims = new List<Claim>
             {
-                new("UserId", CreatedUser.Id.ToString()),
-                new("Name", CreatedUser.FirstName)
+                new("UserId", createdUser.Id.ToString()),
+                new("Name", createdUser.FirstName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)); // کلید امضای توکن
@@ -201,20 +201,16 @@ namespace TaskManager.Controllers
                 signingCredentials: creds // اطلاعات امضا
             );
             
-            
             //ایجاد توکن نهایی برای کاربر
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             
-           
             _context.UserTokens.Add(new UserToken
             {
                 Token = jwtToken,
                 TokenExp = tokenExp,
                 User = user
             });
-
-                
-
+            
                 result.message = "کاربر با موفقیت ایجاد شد.";
                 result.token = jwtToken;
                 result.success = true;
