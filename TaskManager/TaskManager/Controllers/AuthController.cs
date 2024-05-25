@@ -23,6 +23,7 @@ namespace TaskManager.Controllers
         private readonly string _key;
         private readonly string _issuer;
         private readonly string _audience;
+        
 
         public AuthController(IConfiguration configuration
             , AuthService authService, DataBaseContext context)
@@ -131,6 +132,95 @@ namespace TaskManager.Controllers
                 .FirstOrDefault();
             
             return Ok(userDetails);
+        }
+        
+        
+        
+        /// <summary>
+        /// ایجاد یک کاربر جدید.
+        /// </summary>
+        /// <param name="model">اطلاعات مورد نیاز برای ایجاد کاربر.</param>
+        /// <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Create([FromForm] RegisterUser model)
+        {
+            dynamic result = new JObject();
+
+            // بررسی اینکه مدل خالی نباشد
+            if (model == null)
+            {
+                result.message = "اطلاعات کاربر ارسال نشده است.";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            if (model.Password != model.PasswordConfirm)
+            {
+                result.message = "رمز عبور با یکدیگر مطابقت ندارند";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            // بررسی اینکه نام کاربری قبلاً ثبت نشده باشد
+            if (await _context.Users.AnyAsync(x => x.UserName == model.UserName))
+            {
+                result.message = "نام کاربری وارد شده قبلا ثبت شده است.";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+           
+
+            // ایجاد Claims
+            var claims = new List<Claim>
+            {
+                new("UserId", model.UserName),
+                new("Name", model.FirstName)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)); // کلید امضای توکن
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // الگوریتم امضا
+
+            var tokenExp = DateTime.Now.AddMinutes(30);
+
+            // تنظیمات توکن JWT
+            var token = new JwtSecurityToken(
+                issuer: _issuer, // صادرکننده
+                audience: _audience, // دریافت‌کننده
+                claims: claims, // لیست Claims
+                expires: tokenExp, // زمان اعتبار توکن 30 دقیقه
+                signingCredentials: creds // اطلاعات امضا
+            );
+            
+            var image = "";
+            string LastName = "";
+            //ایجاد توکن نهایی برای کاربر
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            // ایجاد کاربر جدید
+
+            var user = new User(model.UserName, model.FirstName, LastName,model.Password,image);
+            _context.UserTokens.Add(new UserToken
+            {
+                Token = jwtToken,
+                TokenExp = tokenExp,
+                User = user
+            });
+               
+                
+
+                // اضافه کردن کاربر به دیتابیس
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+
+                result.message = "کاربر با موفقیت ایجاد شد.";
+                result.token = jwtToken;
+                result.success = true;
+
+                return Ok($"{result}");
+
+
+
         }
     }
 }
