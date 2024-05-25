@@ -145,6 +145,8 @@ namespace TaskManager.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> register([FromForm] RegisterUser model)
         {
+            var image = "";
+            string LastName = "";
             dynamic result = new JObject();
 
             // بررسی اینکه مدل خالی نباشد
@@ -169,14 +171,20 @@ namespace TaskManager.Controllers
                 result.success = false;
                 return BadRequest(result);
             }
+            // ایجاد کاربر جدید
+            var user = new User(model.UserName, model.FirstName, LastName,model.Password,image);
+            
+            // اضافه کردن کاربر به دیتابیس
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
 
-           
-
+            var CreatedUser = await _context.Users.FirstOrDefaultAsync(x=> x.UserName==model.UserName);
+            
             // ایجاد Claims
             var claims = new List<Claim>
             {
-                new("UserId", model.UserName),
-                new("Name", model.FirstName)
+                new("UserId", CreatedUser.Id.ToString()),
+                new("Name", CreatedUser.FirstName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)); // کلید امضای توکن
@@ -193,34 +201,25 @@ namespace TaskManager.Controllers
                 signingCredentials: creds // اطلاعات امضا
             );
             
-            var image = "";
-            string LastName = "";
+            
             //ایجاد توکن نهایی برای کاربر
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-            // ایجاد کاربر جدید
-
-            var user = new User(model.UserName, model.FirstName, LastName,model.Password,image);
+            
+           
             _context.UserTokens.Add(new UserToken
             {
                 Token = jwtToken,
                 TokenExp = tokenExp,
                 User = user
             });
-               
-                
 
-                // اضافه کردن کاربر به دیتابیس
-                await _context.Users.AddAsync(user);
-                await _context.SaveChangesAsync();
+                
 
                 result.message = "کاربر با موفقیت ایجاد شد.";
                 result.token = jwtToken;
                 result.success = true;
 
                 return Ok($"{result}");
-
-
-
         }
     }
 }

@@ -23,7 +23,7 @@
             <response code="200">اگر توکن معتبر باشد، اطلاعات کاربر بازگردانده می‌شود.</response>
             <response code="404">اگر توکن معتبر نباشد، پیام خطا بازگردانده می‌شود.</response>
         </member>
-        <member name="M:TaskManager.Controllers.AuthController.Create(TaskManager.Models.Dto.RegisterUser)">
+        <member name="M:TaskManager.Controllers.AuthController.register(TaskManager.Models.Dto.RegisterUser)">
             <summary>
             ایجاد یک کاربر جدید.
             </summary>
