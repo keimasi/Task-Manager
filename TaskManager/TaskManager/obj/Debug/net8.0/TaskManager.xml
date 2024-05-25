@@ -20,8 +20,6 @@
             اگر توکن معتبر باشد، اطلاعات کاربر را بازمی‌گرداند.
             در غیر این صورت، پیام خطا بازگردانده می‌شود.
             </returns>
-            <response code="200">اگر توکن معتبر باشد، اطلاعات کاربر بازگردانده می‌شود.</response>
-            <response code="404">اگر توکن معتبر نباشد، پیام خطا بازگردانده می‌شود.</response>
         </member>
         <member name="M:TaskManager.Controllers.ChatController.create(TaskManager.Models.Dto.CreateChatDto)">
             <summary>

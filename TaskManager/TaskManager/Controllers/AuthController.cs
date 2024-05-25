@@ -64,8 +64,7 @@ namespace TaskManager.Controllers
             // ایجاد Claims
             var claims = new List<Claim>
             {
-                new("UserId", user.Id.ToString()),
-                new("Name", command.Username)
+                new("Id", user.Id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key)); // کلید امضای توکن
@@ -111,25 +110,21 @@ namespace TaskManager.Controllers
         /// اگر توکن معتبر باشد، اطلاعات کاربر را بازمی‌گرداند.
         /// در غیر این صورت، پیام خطا بازگردانده می‌شود.
         /// </returns>
-        /// <response code="200">اگر توکن معتبر باشد، اطلاعات کاربر بازگردانده می‌شود.</response>
-        /// <response code="404">اگر توکن معتبر نباشد، پیام خطا بازگردانده می‌شود.</response>
         [HttpGet("get-master")]
         public IActionResult GetMaster()
         {
-            dynamic response = new JObject();
-            
-            var userDetails = _context.Users
+            var userDetails = _context.Users.Where(g => g.Id == User.GetPkUser())
                 .AsNoTracking()
                 .Select(x => new
                 {
                     x.Id,
                     x.UserName,
-                    x.Avatar,
+                    avatar = ImageHelper.GetAvatarUrl(x.Avatar),
                     x.FirstName,
                     x.LastName,
                 })
                 .FirstOrDefault();
-            
+
             return Ok(userDetails);
         }
     }
