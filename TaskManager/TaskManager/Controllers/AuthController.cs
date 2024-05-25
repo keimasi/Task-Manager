@@ -143,7 +143,7 @@ namespace TaskManager.Controllers
         /// <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Create([FromForm] RegisterUser model)
+        public async Task<IActionResult> register([FromForm] RegisterUser model)
         {
             dynamic result = new JObject();
 
