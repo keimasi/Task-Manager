@@ -41,7 +41,6 @@ namespace TaskManager.Controllers
                         UserName = x.UserName,
                         FirstName = x.FirstName,
                         LastName = x.LastName,
-                        Password = x.Password,
                         Avatar = x.Avatar,
                         IsActive = x.IsActive
                     });
@@ -86,7 +85,16 @@ namespace TaskManager.Controllers
         {
             dynamic result = new JObject();
 
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.Select(x => new UserViewModel
+            {
+                Id = x.Id,
+                UserName = x.UserName,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Avatar = x.Avatar,
+                IsActive = x.IsActive
+            }).FirstOrDefaultAsync();
+
             if (user == null)
             {
                 result.message = "کاربر مورد نظر یافت نشد";
@@ -104,7 +112,7 @@ namespace TaskManager.Controllers
         /// <param name="model">اطلاعات مورد نیاز برای ایجاد کاربر.</param>
         /// <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromForm] CreateUserDto model)
+        public async Task<IActionResult> Create([FromBody] CreateUserDto model)
         {
             dynamic result = new JObject();
 
