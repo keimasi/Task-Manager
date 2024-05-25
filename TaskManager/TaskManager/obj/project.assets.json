@@ -8190,26 +8190,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AshkaN\\.nuget\\packages\\": {}
+    "C:\\Users\\a.keimasi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
+      "projectUniqueName": "C:\\Users\\a.keimasi\\Documents\\GitHub\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
       "projectName": "TaskManager",
-      "projectPath": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
-      "packagesPath": "C:\\Users\\AshkaN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\obj\\",
+      "projectPath": "C:\\Users\\a.keimasi\\Documents\\GitHub\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
+      "packagesPath": "C:\\Users\\a.keimasi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\a.keimasi\\Documents\\GitHub\\Task-Manager\\TaskManager\\TaskManager\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\AshkaN\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\a.keimasi\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8288,7 +8286,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
