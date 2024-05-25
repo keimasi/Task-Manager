@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using TaskManager.Models;
@@ -10,6 +11,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/project")]
     [ApiController]
+    [Authorize]
     public class ProjectController : ControllerBase
     {
         private readonly DataBaseContext _context;

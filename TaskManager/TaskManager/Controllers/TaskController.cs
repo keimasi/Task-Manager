@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -10,6 +11,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/task")]
     [ApiController]
+    [Authorize]
     public class TaskController : ControllerBase
     {
         private readonly DataBaseContext _context;

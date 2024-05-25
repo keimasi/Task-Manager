@@ -11,7 +11,7 @@
             <param name="command">اطلاعات ورود نام کاربری و کلمه عبور.</param>
             <returns>اطلاعات ورود و توکن JWT در صورت موفقیت ورود یا پیام خطا در صورت وقوع مشکل.</returns>
         </member>
-        <member name="M:TaskManager.Controllers.AuthController.GetMaster(System.String)">
+        <member name="M:TaskManager.Controllers.AuthController.GetMaster">
             <summary>
             دریافت اطلاعات کاربر بر اساس توکن.
             </summary>

@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/authentication")]
     [ApiController]
+    [Authorize]
     public class AuthController : ControllerBase
     {
         private readonly DataBaseContext _context;
@@ -38,6 +40,7 @@ namespace TaskManager.Controllers
         /// <param name="command">اطلاعات ورود نام کاربری و کلمه عبور.</param>
         /// <returns>اطلاعات ورود و توکن JWT در صورت موفقیت ورود یا پیام خطا در صورت وقوع مشکل.</returns>
         [HttpPost("login")]
+        [AllowAnonymous]
         public IActionResult Login(LoginDto command)
         {
             dynamic result = new JObject();
@@ -111,24 +114,12 @@ namespace TaskManager.Controllers
         /// <response code="200">اگر توکن معتبر باشد، اطلاعات کاربر بازگردانده می‌شود.</response>
         /// <response code="404">اگر توکن معتبر نباشد، پیام خطا بازگردانده می‌شود.</response>
         [HttpGet("get-master")]
-        public IActionResult GetMaster(string token)
+        public IActionResult GetMaster()
         {
             dynamic response = new JObject();
-
-            var userTokenRecord = _context.UserTokens
-                .AsNoTracking()
-                .FirstOrDefault(x => x.Token == token);
-
-            if (userTokenRecord == null || userTokenRecord.TokenExp < DateTime.Now)
-            {
-                response.message = "توکن معتبر نمی باشد !";
-                response.success = false;
-                return NotFound(response);
-            }
-
+            
             var userDetails = _context.Users
                 .AsNoTracking()
-                .Where(x => x.Id == userTokenRecord.UserId)
                 .Select(x => new
                 {
                     x.Id,
@@ -138,7 +129,7 @@ namespace TaskManager.Controllers
                     x.LastName,
                 })
                 .FirstOrDefault();
-
+            
             return Ok(userDetails);
         }
     }

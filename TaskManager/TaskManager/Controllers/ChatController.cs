@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -9,6 +10,7 @@ namespace TaskManager.Controllers
 {
     [Route("api/chat")]
     [ApiController]
+    [Authorize]
     public class ChatController : ControllerBase
     {
         private readonly DataBaseContext _context;
