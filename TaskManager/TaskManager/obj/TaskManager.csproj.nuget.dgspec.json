@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\AshkaN\\Desktop\\BackEnd\\TaskManager\\TaskManager\\TaskManager.csproj": {}
+    "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\AshkaN\\Desktop\\BackEnd\\TaskManager\\TaskManager\\TaskManager.csproj": {
+    "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\AshkaN\\Desktop\\BackEnd\\TaskManager\\TaskManager\\TaskManager.csproj",
+        "projectUniqueName": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
         "projectName": "TaskManager",
-        "projectPath": "C:\\Users\\AshkaN\\Desktop\\BackEnd\\TaskManager\\TaskManager\\TaskManager.csproj",
+        "projectPath": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\TaskManager.csproj",
         "packagesPath": "C:\\Users\\AshkaN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\AshkaN\\Desktop\\BackEnd\\TaskManager\\TaskManager\\obj\\",
+        "outputPath": "C:\\Users\\AshkaN\\Desktop\\app\\Task-Manager\\TaskManager\\TaskManager\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\AshkaN\\AppData\\Roaming\\NuGet\\NuGet.Config",
