@@ -10,13 +10,12 @@
             High
         }
         
-
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime ExpireTaskTime { get; set; }
         public Priority PrioritySet { get; set; }
-        // public bool IsDone { get; set; } = false;
+        public bool IsDone { get; set; } = false;
 
 
         public int UserId { get; set; }

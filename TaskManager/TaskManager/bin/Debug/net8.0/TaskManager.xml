@@ -113,17 +113,38 @@
             </summary>
             <returns>پیام مناسب برای حذف وظیفه یا خطا در صورت داشتن خطا</returns>
         </member>
+        <member name="M:TaskManager.Controllers.TaskController.Get(System.Int32)">
+            <summary>
+            نمایش وظیفه با ایدی وارد شده
+            </summary>
+            <returns>نمایش وظیفه با ایدی مشخص .</returns>
+        </member>
         <member name="M:TaskManager.Controllers.TaskController.GetTasks">
             <summary>
             نمایش تمام وظیفه ها
             </summary>
             <returns>نمایش تمام وظیفه ها یا پیام مناسب در صورت خطا.</returns>
         </member>
-        <member name="M:TaskManager.Controllers.TaskController.Get(System.Int32)">
+        <member name="M:TaskManager.Controllers.TaskController.GetTaskByUserId(System.Int32)">
             <summary>
-            نمایش وظیفه با ایدی وارد شده
+            نمایش تمام وظیفه های مربوط به یک کاربر.
             </summary>
-            <returns>نمایش وظیفه با ایدی مشخص .</returns>
+            <param name="userId">شناسه کاربر.</param>
+            <returns>نمایش وظایف کاربر یا پیام مناسب در صورت خطا.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.TaskController.GetTaskByProjectId(System.Int32)">
+            <summary>
+            نمایش تمام وظیفه های مربوط به یک پروژه.
+            </summary>
+            <param name="projectId">شناسه پروژه.</param>
+            <returns>نمایش وظایف پروژه یا پیام مناسب در صورت خطا.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.TaskController.ToggleActive(System.Int32)">
+            <summary>
+            فعال یا غیرفعال کردن یک وظیفه.
+            </summary>
+            <param name="id">شناسه وظیفه مورد نظر.</param>
+            <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
         </member>
         <member name="M:TaskManager.Controllers.UserController.GetAll(TaskManager.Models.Dto.PaginationParameters)">
             <summary>
@@ -168,88 +189,16 @@
             <param name="id">شناسه کاربر مورد نظر.</param>
             <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
         </member>
-        <member name="T:TaskManager.Migrations.InitialCreate">
+        <member name="T:TaskManager.Migrations.Initial">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:TaskManager.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:TaskManager.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations.fix">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations.fixxxx">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxxx.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxxx.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxxx.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations.fix1">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fix1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations.fixx2">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixx2.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixx2.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixx2.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations.fixxx3">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxx3.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxx3.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations.fixxx3.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:TaskManager.Migrations._1">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations._1.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations._1.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:TaskManager.Migrations._1.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:TaskManager.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="P:TaskManager.Models.Dto.ChangePassword.Id">
@@ -267,6 +216,51 @@
             گذرواژه جدید
              </summary> 
         </member>
+        <member name="P:TaskManager.Models.Dto.ChatViewModel.Text">
+            <summary>
+            متن پیام
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.ChatViewModel.CreatedAt">
+            <summary>
+            تاریخ ساخته شدن پیام
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.ChatViewModel.UserID">
+            <summary>
+            ایدی کاربر
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.ChatViewModel.ProjectId">
+            <summary>
+            ایدی پروژه
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.Title">
+            <summary>
+            عنوان نظر
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.Text">
+            <summary>
+            متن نظر
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.CreatedAt">
+            <summary>
+              تاریخ ساخته شدن نظر
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.UserID">
+            <summary>
+            ایدی کاربر
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.ProjectId">
+            <summary>
+            ایدی پروژه
+            </summary> 
+        </member>
         <member name="P:TaskManager.Models.Dto.CreateChatDto.Text">
             <summary>
             متن پیام
@@ -281,6 +275,26 @@
              <summary>
             متن نظر
              </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CreateUserDto.UserName">
+            <summary>
+            نام کاربری
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CreateUserDto.FirstName">
+            <summary>
+            نام
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CreateUserDto.LastName">
+            <summary>
+            نام خانوادگی
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.CreateUserDto.Password">
+            <summary>
+            رمز عبور
+            </summary> 
         </member>
         <member name="P:TaskManager.Models.Dto.CreateProjectDto.Name">
              <summary>
@@ -419,6 +433,31 @@
              </summary> 
         </member>
         <!-- Badly formed XML comment ignored for member "P:TaskManager.Models.Dto.GetAllProjectsDto.IsActive" -->
+        <member name="P:TaskManager.Models.Dto.RegisterUser.UserName">
+            <summary>
+            نام کاربری
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.RegisterUser.FirstName">
+            <summary>
+            نام
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.RegisterUser.LastName">
+            <summary>
+            نام خانوادگی
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.RegisterUser.Password">
+            <summary>
+            رمز عبور
+            </summary> 
+        </member>
+        <member name="P:TaskManager.Models.Dto.RegisterUser.PasswordConfirm">
+            <summary>
+            تایید رمز عبور
+            </summary> 
+        </member>
         <!-- Badly formed XML comment ignored for member "P:TaskManager.Models.Dto.TaskViewMode.Id" -->
         <member name="P:TaskManager.Models.Dto.TaskViewMode.Name">
              <summary>

@@ -164,8 +164,7 @@ namespace TaskManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -287,8 +286,8 @@ namespace TaskManager.Migrations
             modelBuilder.Entity("TaskManager.Models.Entity.Task", b =>
                 {
                     b.HasOne("TaskManager.Models.Entity.Project", "Project")
-                        .WithOne("Tasks")
-                        .HasForeignKey("TaskManager.Models.Entity.Task", "ProjectId")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

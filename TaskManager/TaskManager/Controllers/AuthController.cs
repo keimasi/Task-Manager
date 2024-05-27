@@ -141,7 +141,7 @@ namespace TaskManager.Controllers
         public async Task<IActionResult> register([FromForm] RegisterUser model)
         {
             var image = "";
-            string LastName = "";
+            
             dynamic result = new JObject();
 
             // بررسی اینکه مدل خالی نباشد
@@ -167,7 +167,7 @@ namespace TaskManager.Controllers
                 return BadRequest(result);
             }
             // ایجاد کاربر جدید
-            var user = new User(model.UserName, model.FirstName, LastName,model.Password,image);
+            var user = new User(model.UserName, model.FirstName, model.LastName,model.Password,image);
             
             // اضافه کردن کاربر به دیتابیس
             await _context.Users.AddAsync(user);

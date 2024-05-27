@@ -1,3 +1,4 @@
+using System.Security.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,7 @@ namespace TaskManager.Controllers
                     totalPages
                 };
 
+                ;
                 return Ok(new { users, paginationHeader });
             }
             catch (Exception ex)
@@ -102,6 +104,7 @@ namespace TaskManager.Controllers
                 return NotFound(result);
             }
 
+            
             return Ok(user);
         }
 

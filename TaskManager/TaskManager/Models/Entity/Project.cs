@@ -12,7 +12,8 @@ namespace TaskManager.Models.Entity
         public bool IsActive { get; set; } = true;
 
         public ICollection<User> Users { get; set; }
-        public Task? Tasks { get; set; }
+        // public Task? Tasks { get; set; }
+        public ICollection<Task> Tasks { get; set; }
         public ICollection<Chat> Chats { get; set; }
         public ICollection<Comment> Comments { get; set; }
 

@@ -60,7 +60,7 @@ namespace TaskManager.Models
             // //رابطه یک به چند وظیفه به پروژه
             modelBuilder.Entity<Task>()
                 .HasOne(x => x.Project)
-                .WithOne(x => x.Tasks);
+                .WithMany(x => x.Tasks);
                 
             
             //*******************************************

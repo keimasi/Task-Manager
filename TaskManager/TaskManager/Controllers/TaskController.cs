@@ -22,8 +22,7 @@ namespace TaskManager.Controllers
             _context = context;
         }
 
-
-
+        
         /// <summary>
         /// ایجاد یک وظیفه جدید
         /// </summary>
@@ -53,12 +52,7 @@ namespace TaskManager.Controllers
             }
         }
 
-
-
-       
-
-
-
+        
         /// <summary>
         /// ویرایش وظیفه
         /// </summary>
@@ -103,12 +97,9 @@ namespace TaskManager.Controllers
 
                 return Ok($"{existingTask} " +
                     $"{result}");
-            
-        
         }
 
-
-
+        
         /// <summary>
         /// حذف وظیفه
         /// </summary>
@@ -147,6 +138,65 @@ namespace TaskManager.Controllers
         /// نمایش تمام وظیفه ها
         /// </summary>
         /// <returns>نمایش تمام وظیفه ها یا پیام مناسب در صورت خطا.</returns>
+        // [HttpGet("get-all")]
+        // public IActionResult GetTasks()
+        // {
+        //     dynamic result = new JObject();
+        //
+        //     try
+        //     {
+        //         var tasks = JArray.FromObject(_context.Tasks.Select(t => new TaskViewMode
+        //         {
+        //             Id = t.Id,
+        //             Name = t.Name,
+        //             Description = t.Description,
+        //             ExpireTaskTime = t.ExpireTaskTime,
+        //             PrioritySet = t.PrioritySet,
+        //             UserId = t.UserId,
+        //             ProjectId = t.ProjectId,
+        //             // IsDone = t.IsDone
+        //         }).ToList());
+        //
+        //         result.alltasks = tasks;
+        //         result.success = true;
+        //         return Ok(result);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         result.message = "خطا در بازیابی وظایف: " + ex.Message;
+        //         result.success = false;
+        //         return BadRequest(result);
+        //     }
+        // }
+        
+        
+        /// <summary>
+        /// نمایش وظیفه با ایدی وارد شده
+        /// </summary>
+        /// <returns>نمایش وظیفه با ایدی مشخص .</returns>
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            dynamic result = new JObject();
+
+            var task = await _context.Tasks.FindAsync(id);
+            if (task == null)
+            {
+                result.message = "وظیفه مورد نظر یافت نشد";
+                result.success = false;
+                return NotFound(result);
+            }
+
+            return Ok(task);
+        }
+        
+        
+        
+        
+        /// <summary>
+        /// نمایش تمام وظیفه ها
+        /// </summary>
+        /// <returns>نمایش تمام وظیفه ها یا پیام مناسب در صورت خطا.</returns>
         [HttpGet("get-all")]
         public IActionResult GetTasks()
         {
@@ -178,25 +228,112 @@ namespace TaskManager.Controllers
             }
         }
         
+        /// <summary>
+        /// نمایش تمام وظیفه های مربوط به یک کاربر.
+        /// </summary>
+        /// <param name="userId">شناسه کاربر.</param>
+        /// <returns>نمایش وظایف کاربر یا پیام مناسب در صورت خطا.</returns>
+        [HttpGet("get-all/{userId}")]
+        public IActionResult GetTaskByUserId(int userId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                // فیلتر کردن وظایف بر اساس UserId
+                var tasks = JArray.FromObject(_context.Tasks
+                    .Where(t => t.UserId == userId)
+                    .Select(t => new TaskViewMode
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Description = t.Description,
+                        ExpireTaskTime = t.ExpireTaskTime,
+                        PrioritySet = t.PrioritySet,
+                        UserId = t.UserId,
+                        ProjectId = t.ProjectId,
+                        // IsDone = t.IsDone
+                    }).ToList());
+
+                result.alltasks = tasks;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی وظایف: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+        
         
         /// <summary>
-        /// نمایش وظیفه با ایدی وارد شده
+        /// نمایش تمام وظیفه های مربوط به یک پروژه.
         /// </summary>
-        /// <returns>نمایش وظیفه با ایدی مشخص .</returns>
-        [HttpGet("get/{id}")]
-        public async Task<IActionResult> Get(int id)
+        /// <param name="projectId">شناسه پروژه.</param>
+        /// <returns>نمایش وظایف پروژه یا پیام مناسب در صورت خطا.</returns>
+        [HttpGet]
+        public IActionResult GetTaskByProjectId(int projectId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                // فیلتر کردن وظایف بر اساس projectId
+                var tasks = JArray.FromObject(_context.Tasks
+                    .Where(t => t.ProjectId == projectId)
+                    .Select(t => new TaskViewMode
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Description = t.Description,
+                        ExpireTaskTime = t.ExpireTaskTime,
+                        PrioritySet = t.PrioritySet,
+                        UserId = t.UserId,
+                        ProjectId = t.ProjectId,
+                        // IsDone = t.IsDone
+                    }).ToList());
+
+                result.alltasks = tasks;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی وظایف: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+        
+        
+        /// <summary>
+        /// فعال یا غیرفعال کردن یک وظیفه.
+        /// </summary>
+        /// <param name="id">شناسه وظیفه مورد نظر.</param>
+        /// <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
+        [HttpPost("toggle-active/{id}")]
+        public async Task<IActionResult> ToggleActive(int id)
         {
             dynamic result = new JObject();
 
             var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {
-                result.message = "وظیفه مورد نظر یافت نشد";
+                result.message = "وظیفه ای یافت نشد !";
                 result.success = false;
                 return NotFound(result);
             }
 
-            return Ok(task);
+            task.IsDone = !task.IsDone;
+
+            await _context.SaveChangesAsync();
+
+            result.message = task.IsDone ? "وظیفه انجام شد" : "وظیفه درحال انجام است ";
+            result.success = true;
+
+            return Ok(result);
         }
 
     }

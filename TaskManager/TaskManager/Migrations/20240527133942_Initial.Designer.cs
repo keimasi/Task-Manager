@@ -12,8 +12,8 @@ using TaskManager.Models;
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20240521130816_fixxx3")]
-    partial class fixxx3
+    [Migration("20240527133942_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,8 +167,7 @@ namespace TaskManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -290,8 +289,8 @@ namespace TaskManager.Migrations
             modelBuilder.Entity("TaskManager.Models.Entity.Task", b =>
                 {
                     b.HasOne("TaskManager.Models.Entity.Project", "Project")
-                        .WithOne("Tasks")
-                        .HasForeignKey("TaskManager.Models.Entity.Task", "ProjectId")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
