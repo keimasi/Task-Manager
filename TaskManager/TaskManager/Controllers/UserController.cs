@@ -256,5 +256,113 @@ namespace TaskManager.Controllers
 
             return Ok(result);
         }
+        
+        
+        
+        
+        /// <summary>
+        /// دریافت لیستی از کاربران **غیر فعال** با صفحه‌بندی.
+        /// </summary>
+        /// <returns>لیست کاربران غیر فعال به همراه اطلاعات صفحه‌بندی.</returns>
+        [HttpPost("get-all-disabled-users")]
+        public async Task<IActionResult> GetAllDisabledUsers([FromBody] PaginationParameters paginationParams)
+        {
+            try
+            {
+                int skip = (paginationParams.CurrentPage - 1) * paginationParams.ItemsPerPage;
+
+                var usersQuery = _context.Users.Where(x=>x.IsActive==false)
+                    .Select(x => new UserViewModel
+                    {
+                        Id = x.Id,
+                        UserName = x.UserName,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        Avatar = x.Avatar,
+                        IsActive = x.IsActive
+                    });
+
+                var users = await usersQuery
+                    .Skip(skip)
+                    .Take(paginationParams.ItemsPerPage)
+                    .ToListAsync();
+
+                if (users.Count == 0)
+                {
+                    return NotFound("کاربری یافت نشد!");
+                }
+
+                var totalCount = await usersQuery.CountAsync();
+                var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParams.ItemsPerPage);
+
+                var paginationHeader = new
+                {
+                    paginationParams.CurrentPage,
+                    paginationParams.ItemsPerPage,
+                    totalCount,
+                    totalPages
+                };
+
+                ;
+                return Ok(new { users, paginationHeader });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "خطایی رخ داده است!");
+            }
+        }
+        
+        
+        /// <summary>
+        /// دریافت لیستی از کاربران ** فعال** با صفحه‌بندی.
+        /// </summary>
+        /// <returns>لیست کاربران  فعال به همراه اطلاعات صفحه‌بندی.</returns>
+        [HttpPost("get-all-active-users")]
+        public async Task<IActionResult> GetAllActiveUsers([FromBody] PaginationParameters paginationParams)
+        {
+            try
+            {
+                int skip = (paginationParams.CurrentPage - 1) * paginationParams.ItemsPerPage;
+
+                var usersQuery = _context.Users.Where(x=>x.IsActive==true)
+                    .Select(x => new UserViewModel
+                    {
+                        Id = x.Id,
+                        UserName = x.UserName,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        Avatar = x.Avatar,
+                        IsActive = x.IsActive
+                    });
+
+                var users = await usersQuery
+                    .Skip(skip)
+                    .Take(paginationParams.ItemsPerPage)
+                    .ToListAsync();
+
+                if (users.Count == 0)
+                {
+                    return NotFound("کاربری یافت نشد!");
+                }
+
+                var totalCount = await usersQuery.CountAsync();
+                var totalPages = (int)Math.Ceiling(totalCount / (double)paginationParams.ItemsPerPage);
+
+                var paginationHeader = new
+                {
+                    paginationParams.CurrentPage,
+                    paginationParams.ItemsPerPage,
+                    totalCount,
+                    totalPages
+                };
+
+                ;
+                return Ok(new { users, paginationHeader });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "خطایی رخ داده است!");
+            }
+        }
     }
 }

@@ -22,27 +22,7 @@ namespace TaskManager.Controllers
             _context = context;
         }
 
-
-        /// <summary>
-        /// ایجاد یک پروژه جدید
-        /// </summary>
-        /// <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
-        [HttpPost("create")]
-        public IActionResult Create(CreateProjectDto project)
-        {
-            dynamic result = new JObject();
-
-            var Project = new Project(project.Name, project.Description, project.StartTime, project.EndTime);
-            _context.Projects.Add(Project);
-            _context.SaveChanges();
-
-            result.message = "پروژه با موفقیت ایجاد شد";
-            result.success = true;
-
-            return Ok(result);
-        }
-
-
+        
 
         /// <summary>
         /// ویرایش پروژه
@@ -147,7 +127,9 @@ namespace TaskManager.Controllers
                     Description = t.Description,
                     EndTime = t.EndTime,
                     StartTime = t.StartTime,
-                    IsActive = t.IsActive
+                    IsActive = t.IsActive,
+                    UserProjects = t.UserProjects
+                    
                 }).ToList());
 
                 result.Projects = projects;
@@ -172,14 +154,169 @@ namespace TaskManager.Controllers
             dynamic result = new JObject();
 
             var project = await _context.Projects.FindAsync(id);
+            
             if (project == null)
             {
                 result.message = "پروژه مورد نظر یافت نشد";
                 result.success = false;
                 return NotFound(result);
             }
-
+            
             return Ok(project);
+        }
+        
+        
+        
+        /// <summary>
+        /// ایجاد یک پروژه جدید
+        /// </summary>
+        /// <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
+        // [HttpPost("create")]
+        // public IActionResult Create([FromBody] CreateProjectDto project)
+        // {
+        //     dynamic result = new JObject();
+        //
+        //     if (project == null)
+        //     {
+        //         result.message = "اطلاعات پروژه نادرست است";
+        //         result.success = false;
+        //         return BadRequest(result);
+        //     }
+        //
+        //     var newProject = new Project(
+        //         
+        //         project.Name,
+        //         project.Description,
+        //         project.StartTime,
+        //         project.EndTime
+        //         
+        //     );
+        //     _context.Projects.Add(newProject);
+        //     _context.SaveChanges();
+        //
+        //     // Add users to the project
+        //     if (project.UserIds != null && project.UserIds.Any())
+        //     {
+        //         foreach (var userId in project.UserIds)
+        //         {
+        //             var user = _context.Users.Find(userId);
+        //             
+        //             if (user != null)
+        //             {
+        //                 newProject.UserProjects.Add(new UserProject { UserId = userId });
+        //                 
+        //             }
+        //         }
+        //     }
+        //     _context.SaveChanges();
+        //     
+        //     result.message = "پروژه با موفقیت ایجاد شد";
+        //     result.success = true;
+        //
+        //     return Ok(result);
+        // }
+        
+        
+        
+        /// <summary>
+        /// ایجاد یک پروژه جدید
+        /// </summary>
+        /// <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CreateProjectDto project)
+        {
+            dynamic result = new JObject();
+
+            if (project == null)
+            {
+                result.message = "اطلاعات پروژه نادرست است";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            // ایجاد پروژه جدید
+            var newProject = new Project(
+                project.Name,
+                project.Description,
+                project.StartTime,
+                project.EndTime
+            );
+    
+            // اضافه کردن پروژه به دیتابیس
+            _context.Projects.Add(newProject);
+            _context.SaveChanges();
+
+            // اضافه کردن کاربران به پروژه
+            if (project.UserIds != null && project.UserIds.Any())
+            {
+                foreach (var userId in project.UserIds)
+                {
+                    var user = _context.Users.Find(userId);
+                    if (user != null)
+                    {
+                        _context.UserProjects.Add(new UserProject { UserId = userId, ProjectId = newProject.Id });
+                    }
+                }
+                _context.SaveChanges();
+            }
+    
+            result.message = "پروژه با موفقیت ایجاد شد";
+            result.success = true;
+
+            return Ok(result);
+        }
+        
+        
+        
+        
+        /// <summary>
+        /// نمایش تمام پروژه های مربوط به یک کاربر.
+        /// </summary>
+        /// <param name="userId">شناسه کاربر.</param>
+        /// <returns>نمایش پروژه کاربر یا پیام مناسب در صورت خطا.</returns>
+        [HttpGet("get-all/{userId}")]
+        public IActionResult GetProjectByUserId(int userId)
+        {
+            dynamic result = new JObject();
+            try
+            {
+                // فیلتر کردن پروژه ها بر اساس UserId
+                var projectIds = _context.UserProjects
+                    .Where(up => up.UserId == userId)
+                    .Select(up => up.ProjectId)
+                    .ToList();
+
+                if (projectIds == null || !projectIds.Any())
+                {
+                    result.message = "هیچ پروژه‌ای یافت نشد.";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                // دریافت پروژه ها بر اساس ProjectId
+                var projects = _context.Projects
+                    .Where(p => projectIds.Contains(p.Id))
+                    .Select(t => new GetAllProjectsDto
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Description = t.Description,
+                        StartTime = t.StartTime,
+                        EndTime = t.EndTime,
+                        IsActive = t.IsActive,
+                    })
+                    .ToList();
+
+                result.allprojects = JArray.FromObject(projects);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی پروژه‌ها: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
         }
     }
 }

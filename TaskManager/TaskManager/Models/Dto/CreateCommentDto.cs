@@ -11,7 +11,7 @@
         /// </summary> 
         public string Text { get; set; }
         public int UserID { get; set; }
-        public int ProjectId { get; set; }
+        public int TaskId { get; set; }
 
     }
 }

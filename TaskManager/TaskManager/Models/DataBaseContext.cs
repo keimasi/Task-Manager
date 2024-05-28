@@ -16,23 +16,40 @@ namespace TaskManager.Models
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
+        public DbSet<UserProject> UserProjects { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //رابطه یک به جند کامنت و کاربران
+            modelBuilder.Entity<UserProject>()
+                .HasKey(pu => new { pu.ProjectId, pu.UserId });
+
+            modelBuilder.Entity<UserProject>()
+                .HasOne(pu => pu.Project)
+                .WithMany(p => p.UserProjects)
+                .HasForeignKey(pu => pu.ProjectId);
+
+            modelBuilder.Entity<UserProject>()
+                .HasOne(pu => pu.User)
+                .WithMany(u => u.UserProjects)
+                .HasForeignKey(pu => pu.UserId);
+
+            //*******************************************
+
+            // رابطه یک به چند بین Comment و User
             modelBuilder.Entity<Comment>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.Comments)
-                .HasForeignKey(x => x.UserID);
-            
-            //رابطه یک به چند کامنت به پروژه
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict); // یا DeleteBehavior.NoAction
+
+            // رابطه یک به چند بین Comment و Task
             modelBuilder.Entity<Comment>()
-                .HasOne(x => x.Project)
-                .WithMany(x => x.Comments)
-                .HasForeignKey(x => x.ProjectId);
+                .HasOne(c => c.Task)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(c => c.TaskId)
+                .OnDelete(DeleteBehavior.Cascade); // یا DeleteBehavior.NoAction
 
             //*******************************************
 
@@ -69,7 +86,6 @@ namespace TaskManager.Models
             modelBuilder.Entity<Project>()
                 .HasMany(x => x.Users)
                 .WithMany(x => x.Projects);
-            
 
         }
 

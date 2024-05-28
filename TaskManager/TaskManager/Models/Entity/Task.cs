@@ -22,6 +22,7 @@
         public User User { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public Task(string name, string description, DateTime expireTaskTime, Priority prioritySet, int userId, int projectId)
         {

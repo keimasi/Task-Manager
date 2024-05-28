@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Models.Dto
+﻿using TaskManager.Models.Entity;
+
+namespace TaskManager.Models.Dto
 {
     public class GetAllProjectsDto
     {
@@ -24,5 +26,8 @@
         /// <summary>
         ///فعال یا غیر فعال بودن پروژه
         public bool IsActive { get; set; }
+        // public ICollection<User> Users { get; set; }
+        public ICollection<UserProject> UserProjects { get; set; }
     }
+    
 }

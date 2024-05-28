@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Models.Dto
+﻿using TaskManager.Models.Entity;
+
+namespace TaskManager.Models.Dto
 {
     public class CreateProjectDto
     {
@@ -18,5 +20,6 @@
         ///زمان پایان پروژه
         /// </summary> 
         public DateTime EndTime { get; set; }
+        public List<int> UserIds { get; set; }
     }
 }

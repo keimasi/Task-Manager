@@ -78,7 +78,7 @@ namespace TaskManager.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int>("TaskId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -89,14 +89,14 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("TaskId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -205,6 +205,21 @@ namespace TaskManager.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("TaskManager.Models.Entity.UserProject", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProjects");
+                });
+
             modelBuilder.Entity("TaskManager.Models.Entity.UserToken", b =>
                 {
                     b.Property<int>("Id")
@@ -266,19 +281,19 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.Models.Entity.Comment", b =>
                 {
-                    b.HasOne("TaskManager.Models.Entity.Project", "Project")
+                    b.HasOne("TaskManager.Models.Entity.Task", "Task")
                         .WithMany("Comments")
-                        .HasForeignKey("ProjectId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TaskManager.Models.Entity.User", "User")
                         .WithMany("Comments")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Project");
+                    b.Navigation("Task");
 
                     b.Navigation("User");
                 });
@@ -293,6 +308,25 @@ namespace TaskManager.Migrations
 
                     b.HasOne("TaskManager.Models.Entity.User", "User")
                         .WithMany("Task")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.Entity.UserProject", b =>
+                {
+                    b.HasOne("TaskManager.Models.Entity.Project", "Project")
+                        .WithMany("UserProjects")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskManager.Models.Entity.User", "User")
+                        .WithMany("UserProjects")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -317,9 +351,14 @@ namespace TaskManager.Migrations
                 {
                     b.Navigation("Chats");
 
-                    b.Navigation("Comments");
-
                     b.Navigation("Tasks");
+
+                    b.Navigation("UserProjects");
+                });
+
+            modelBuilder.Entity("TaskManager.Models.Entity.Task", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("TaskManager.Models.Entity.User", b =>
@@ -331,6 +370,8 @@ namespace TaskManager.Migrations
                     b.Navigation("Task");
 
                     b.Navigation("Tokens");
+
+                    b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,6 +14,7 @@
         public IEnumerable<Task>? Task { get;  set; }
         public ICollection<Comment> Comments { get;  set; }
         public ICollection<Project> Projects { get;  set; }
+        public ICollection<UserProject> UserProjects { get; set; }
         public ICollection<Chat> Chats { get;  set; }
         public ICollection<UserToken> Tokens { get; set; }
         

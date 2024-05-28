@@ -26,6 +26,7 @@ namespace TaskManager.Models.Dto
         ///وظیفه انجام شده یا نه
         /// </summary>
         // public bool IsDone { get; set; }
+        public bool IsDone { get; set; }
         
         
         public int UserId { get; set; }

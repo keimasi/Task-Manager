@@ -151,5 +151,98 @@ namespace TaskManager.Controllers
                 return BadRequest(result);
             }
         }
+        
+        /// <summary>
+        /// دریافت پیام‌ها براساس ProjectId
+        /// </summary>
+        /// <param name="projectId">شناسه پروژه</param>
+        /// <returns>لیست پیام‌های مربوط به پروژه یا پیام مناسب در صورت خطا</returns>
+        [HttpGet("chats/by-project/{projectId}")]
+        public IActionResult GetChatsByProjectId(int projectId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                var chats = _context.Chats
+                    .Where(c => c.ProjectId == projectId)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Text,
+                        c.CreatedAt,
+                        User = new 
+                        {
+                            c.User.Id,
+                            c.User.UserName
+                        }
+                    })
+                    .ToList();
+
+                if (chats.Count == 0)
+                {
+                    result.message = "هیچ پیامی یافت نشد";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                result.chats = JArray.FromObject(chats);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی پیام‌ها: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+        
+        
+        /// <summary>
+        /// دریافت پیام‌ها براساس userId
+        /// </summary>
+        /// <param name="userId">شناسه کاربر</param>
+        /// <returns>لیست پیام‌های مربوط به کاربر یا پیام مناسب در صورت خطا</returns>
+        [HttpGet("chats/by-user/{userId}")]
+        public IActionResult GetChatsByUserId(int userId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                var chats = _context.Chats
+                    .Where(c => c.UserID == userId)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Text,
+                        c.CreatedAt,
+                        Project = new 
+                        {
+                            c.Project.Id,
+                            c.Project.Name
+                        }
+                    })
+                    .ToList();
+
+                if (chats.Count == 0)
+                {
+                    result.message = "هیچ پیامی یافت نشد";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                result.chats = JArray.FromObject(chats);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی پیام‌ها: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
     }
 }

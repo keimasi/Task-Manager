@@ -15,13 +15,12 @@ namespace TaskManager.Controllers
     public class TaskController : ControllerBase
     {
         private readonly DataBaseContext _context;
-
-
+        
         public TaskController(DataBaseContext context)
         {
             _context = context;
         }
-
+        
         
         /// <summary>
         /// ایجاد یک وظیفه جدید
@@ -135,42 +134,6 @@ namespace TaskManager.Controllers
         
         
         /// <summary>
-        /// نمایش تمام وظیفه ها
-        /// </summary>
-        /// <returns>نمایش تمام وظیفه ها یا پیام مناسب در صورت خطا.</returns>
-        // [HttpGet("get-all")]
-        // public IActionResult GetTasks()
-        // {
-        //     dynamic result = new JObject();
-        //
-        //     try
-        //     {
-        //         var tasks = JArray.FromObject(_context.Tasks.Select(t => new TaskViewMode
-        //         {
-        //             Id = t.Id,
-        //             Name = t.Name,
-        //             Description = t.Description,
-        //             ExpireTaskTime = t.ExpireTaskTime,
-        //             PrioritySet = t.PrioritySet,
-        //             UserId = t.UserId,
-        //             ProjectId = t.ProjectId,
-        //             // IsDone = t.IsDone
-        //         }).ToList());
-        //
-        //         result.alltasks = tasks;
-        //         result.success = true;
-        //         return Ok(result);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         result.message = "خطا در بازیابی وظایف: " + ex.Message;
-        //         result.success = false;
-        //         return BadRequest(result);
-        //     }
-        // }
-        
-        
-        /// <summary>
         /// نمایش وظیفه با ایدی وارد شده
         /// </summary>
         /// <returns>نمایش وظیفه با ایدی مشخص .</returns>
@@ -212,8 +175,8 @@ namespace TaskManager.Controllers
                     ExpireTaskTime = t.ExpireTaskTime,
                     PrioritySet = t.PrioritySet,
                     UserId = t.UserId,
-                    ProjectId = t.ProjectId,
-                    // IsDone = t.IsDone
+                    ProjectId = t.ProjectId, 
+                    IsDone = t.IsDone
                 }).ToList());
 
                 result.alltasks = tasks;
@@ -252,7 +215,7 @@ namespace TaskManager.Controllers
                         PrioritySet = t.PrioritySet,
                         UserId = t.UserId,
                         ProjectId = t.ProjectId,
-                        // IsDone = t.IsDone
+                         IsDone = t.IsDone
                     }).ToList());
 
                 result.alltasks = tasks;
@@ -292,7 +255,7 @@ namespace TaskManager.Controllers
                         PrioritySet = t.PrioritySet,
                         UserId = t.UserId,
                         ProjectId = t.ProjectId,
-                        // IsDone = t.IsDone
+                        IsDone = t.IsDone
                     }).ToList());
 
                 result.alltasks = tasks;

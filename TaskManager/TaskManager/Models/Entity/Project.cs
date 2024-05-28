@@ -12,10 +12,12 @@ namespace TaskManager.Models.Entity
         public bool IsActive { get; set; } = true;
 
         public ICollection<User> Users { get; set; }
+        // public ICollection<ProjectUser> ProjectUsers { get; set; }
+        public ICollection<UserProject> UserProjects { get; set; }
         // public Task? Tasks { get; set; }
         public ICollection<Task> Tasks { get; set; }
         public ICollection<Chat> Chats { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+
 
         public Project(string name, string description, DateTime startTime, DateTime endTime)
         {
@@ -23,6 +25,7 @@ namespace TaskManager.Models.Entity
             Description = description;
             StartTime = startTime;
             EndTime = endTime;
+            UserProjects = new List<UserProject>();
         }
     }
 }

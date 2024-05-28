@@ -23,7 +23,7 @@ public class CommentViewModel
     /// <summary>
     /// ایدی پروژه
     /// </summary> 
-    public int ProjectId { get; set; }
+    public int TaskId { get; set; }
     public User User { get; set; }
-    public Project Project { get; set; }
+    public Project Task { get; set; }
 }

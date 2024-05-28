@@ -40,7 +40,7 @@ namespace TaskManager.Controllers
                     return BadRequest(result);
                 }
 
-                var newComment = new Comment(comment.Title, comment.Text,comment.UserID,comment.ProjectId);
+                var newComment = new Comment(comment.Title, comment.Text,comment.UserID,comment.TaskId);
 
                 _context.Comments.Add(newComment);
                 _context.SaveChanges();
@@ -150,9 +150,102 @@ namespace TaskManager.Controllers
                 result.success = false;
                 return BadRequest(result);
             }
-            
-
-            
         }
+    
+    
+        /// <summary>
+        /// دریافت نظرات براساس TaskId
+        /// </summary>
+        /// <param name="taskId">شناسه وظیفه</param>
+        /// <returns>لیست نظرات مربوط به وظیفه یا پیام مناسب در صورت خطا</returns>
+        [HttpGet("comments/by-task/{taskId}")]
+        public IActionResult GetCommentsByTaskId(int taskId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                var comments = _context.Comments
+                    .Where(c => c.TaskId == taskId)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Title,
+                        c.Text,
+                        c.CreatedAt,
+                        User = new 
+                        {
+                            c.User.Id,
+                            c.User.UserName
+                        }
+                    })
+                    .ToList();
+
+                if (comments.Count == 0)
+                {
+                    result.message = "هیچ نظری یافت نشد";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                result.comments = JArray.FromObject(comments);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی نظرات: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+        
+        /// <summary>
+        /// دریافت نظرات براساس UserId
+        /// </summary>
+        /// <param name="userId">شناسه کاربر</param>
+        /// <returns>لیست نظرات مربوط به کاربر یا پیام مناسب در صورت خطا</returns>
+        [HttpGet("comments/by-user/{userId}")]
+        public IActionResult GetCommentsByUserId(int userId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                var comments = _context.Comments
+                    .Where(c => c.UserId == userId)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Title,
+                        c.Text,
+                        c.CreatedAt,
+                        Task = new 
+                        {
+                            c.Task.Id,
+                            c.Task.Name
+                        }
+                    })
+                    .ToList();
+
+                if (comments.Count == 0)
+                {
+                    result.message = "هیچ نظری یافت نشد";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                result.comments = JArray.FromObject(comments);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی نظرات: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+        
     }
 }
