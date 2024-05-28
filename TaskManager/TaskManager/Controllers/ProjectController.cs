@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using TaskManager.Models;
 using TaskManager.Models.Dto;
@@ -21,7 +22,6 @@ namespace TaskManager.Controllers
         {
             _context = context;
         }
-
         
 
         /// <summary>
@@ -120,7 +120,9 @@ namespace TaskManager.Controllers
 
             try
             {
-                var projects = JArray.FromObject(_context.Projects.Select(t => new GetAllProjectsDto
+                var projects = JArray.FromObject(_context.Projects.
+                    Include(g=>g.UserProjects).ThenInclude
+                        (g=>g.User).Select(t => new 
                 {
                     Id = t.Id,
                     Name = t.Name,
@@ -128,7 +130,13 @@ namespace TaskManager.Controllers
                     EndTime = t.EndTime,
                     StartTime = t.StartTime,
                     IsActive = t.IsActive,
-                    UserProjects = t.UserProjects
+                    UserProjects = t.UserProjects.Select(f=>new
+                    {
+                        id = f.User.Id,
+                       user= f.User.UserName,
+                       name = (f.User.FirstName + " " + f.User.LastName)
+                       
+                    })
                     
                 }).ToList());
 
@@ -143,78 +151,6 @@ namespace TaskManager.Controllers
                 return BadRequest(result);
             }
         }
-        
-        /// <summary>
-        /// نمایش پروژه با ایدی وارد شده
-        /// </summary>
-        /// <returns>نمایش پروژه با ایدی مشخص .</returns>
-        [HttpGet("get/{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            dynamic result = new JObject();
-
-            var project = await _context.Projects.FindAsync(id);
-            
-            if (project == null)
-            {
-                result.message = "پروژه مورد نظر یافت نشد";
-                result.success = false;
-                return NotFound(result);
-            }
-            
-            return Ok(project);
-        }
-        
-        
-        
-        /// <summary>
-        /// ایجاد یک پروژه جدید
-        /// </summary>
-        /// <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
-        // [HttpPost("create")]
-        // public IActionResult Create([FromBody] CreateProjectDto project)
-        // {
-        //     dynamic result = new JObject();
-        //
-        //     if (project == null)
-        //     {
-        //         result.message = "اطلاعات پروژه نادرست است";
-        //         result.success = false;
-        //         return BadRequest(result);
-        //     }
-        //
-        //     var newProject = new Project(
-        //         
-        //         project.Name,
-        //         project.Description,
-        //         project.StartTime,
-        //         project.EndTime
-        //         
-        //     );
-        //     _context.Projects.Add(newProject);
-        //     _context.SaveChanges();
-        //
-        //     // Add users to the project
-        //     if (project.UserIds != null && project.UserIds.Any())
-        //     {
-        //         foreach (var userId in project.UserIds)
-        //         {
-        //             var user = _context.Users.Find(userId);
-        //             
-        //             if (user != null)
-        //             {
-        //                 newProject.UserProjects.Add(new UserProject { UserId = userId });
-        //                 
-        //             }
-        //         }
-        //     }
-        //     _context.SaveChanges();
-        //     
-        //     result.message = "پروژه با موفقیت ایجاد شد";
-        //     result.success = true;
-        //
-        //     return Ok(result);
-        // }
         
         
         
@@ -318,5 +254,60 @@ namespace TaskManager.Controllers
                 return BadRequest(result);
             }
         }
+        
+        
+        
+        /// <summary>
+        /// نمایش مشخصات پروژه با استفاده از شناسه پروژه
+        /// </summary>
+        /// <param name="projectId">شناسه پروژه</param>
+        /// <returns>مشخصات پروژه یا پیام مناسب در صورت خطا</returns>
+        [HttpGet("get-by-id/{projectId}")]
+        public IActionResult GetProjectById(int projectId)
+        {
+            dynamic result = new JObject();
+
+            try
+            {
+                var project = _context.Projects
+                    .Include(p => p.UserProjects)
+                    .ThenInclude(up => up.User)
+                    .Where(p => p.Id == projectId)
+                    .Select(p => new 
+                    {
+                        Id = p.Id,
+                        Name = p.Name,
+                        Description = p.Description,
+                        EndTime = p.EndTime,
+                        StartTime = p.StartTime,
+                        IsActive = p.IsActive,
+                        UserProjects = p.UserProjects.Select(up => new 
+                        {
+                            Id = up.User.Id,
+                            UserName = up.User.UserName,
+                            FullName = up.User.FirstName + " " + up.User.LastName
+                        })
+                    })
+                    .FirstOrDefault();
+
+                if (project == null)
+                {
+                    result.message = "پروژه‌ای با این شناسه یافت نشد";
+                    result.success = false;
+                    return NotFound(result);
+                }
+
+                result.Project = JObject.FromObject(project);
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                result.message = "خطا در بازیابی پروژه: " + ex.Message;
+                result.success = false;
+                return BadRequest(result);
+            }
+        }
+
     }
 }

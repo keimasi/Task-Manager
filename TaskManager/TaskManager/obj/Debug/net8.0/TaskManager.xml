@@ -111,12 +111,6 @@
             </summary>
             <returns>نمایش همه پروژه ها .</returns>
         </member>
-        <member name="M:TaskManager.Controllers.ProjectController.Get(System.Int32)">
-            <summary>
-            نمایش پروژه با ایدی وارد شده
-            </summary>
-            <returns>نمایش پروژه با ایدی مشخص .</returns>
-        </member>
         <member name="M:TaskManager.Controllers.ProjectController.Create(TaskManager.Models.Dto.CreateProjectDto)">
             <summary>
             ایجاد یک پروژه جدید
@@ -129,6 +123,13 @@
             </summary>
             <param name="userId">شناسه کاربر.</param>
             <returns>نمایش پروژه کاربر یا پیام مناسب در صورت خطا.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.ProjectController.GetProjectById(System.Int32)">
+            <summary>
+            نمایش مشخصات پروژه با استفاده از شناسه پروژه
+            </summary>
+            <param name="projectId">شناسه پروژه</param>
+            <returns>مشخصات پروژه یا پیام مناسب در صورت خطا</returns>
         </member>
         <member name="M:TaskManager.Controllers.TaskController.Create(TaskManager.Models.Dto.CreateTaskDto)">
             <summary>
