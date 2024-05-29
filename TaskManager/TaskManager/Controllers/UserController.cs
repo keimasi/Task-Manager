@@ -87,7 +87,8 @@ namespace TaskManager.Controllers
         {
             dynamic result = new JObject();
 
-            var user = await _context.Users.Select(x => new UserViewModel
+            var user = await _context.Users.Where(u=>u.Id==id)
+                .Select(x => new UserViewModel
             {
                 Id = x.Id,
                 UserName = x.UserName,
