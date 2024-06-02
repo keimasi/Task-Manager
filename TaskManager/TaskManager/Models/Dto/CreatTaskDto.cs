@@ -1,4 +1,5 @@
-﻿using static TaskManager.Models.Entity.Task;
+﻿using System.ComponentModel.DataAnnotations;
+using static TaskManager.Models.Entity.Task;
 
 namespace TaskManager.Models.Dto
 {
@@ -6,7 +7,7 @@ namespace TaskManager.Models.Dto
     {
         /// <summary>
         /// نام وظیفه
-        /// </summary> 
+        /// </summary>
         public string Name { get; set; }
         /// <summary>
         ///توضیحات وظیفه

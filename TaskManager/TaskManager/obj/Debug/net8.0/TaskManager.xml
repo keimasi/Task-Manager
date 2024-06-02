@@ -379,7 +379,7 @@
         <member name="P:TaskManager.Models.Dto.CreateTaskDto.Name">
             <summary>
             نام وظیفه
-            </summary> 
+            </summary>
         </member>
         <member name="P:TaskManager.Models.Dto.CreateTaskDto.Description">
              <summary>

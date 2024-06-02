@@ -15,8 +15,6 @@ namespace TaskManager.Controllers
     {
         private readonly DataBaseContext _context;
 
-
-
         public ChatController(DataBaseContext context)
         {
             _context = context;

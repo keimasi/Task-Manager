@@ -46,6 +46,20 @@
             </summary>
             <returns>پیام مناسب برای ویرایش شدن یا نشدن پیام.</returns>
         </member>
+        <member name="M:TaskManager.Controllers.ChatController.GetChatsByProjectId(System.Int32)">
+            <summary>
+            دریافت پیام‌ها براساس ProjectId
+            </summary>
+            <param name="projectId">شناسه پروژه</param>
+            <returns>لیست پیام‌های مربوط به پروژه یا پیام مناسب در صورت خطا</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.ChatController.GetChatsByUserId(System.Int32)">
+            <summary>
+            دریافت پیام‌ها براساس userId
+            </summary>
+            <param name="userId">شناسه کاربر</param>
+            <returns>لیست پیام‌های مربوط به کاربر یا پیام مناسب در صورت خطا</returns>
+        </member>
         <member name="M:TaskManager.Controllers.CommentController.Create(TaskManager.Models.Dto.CreateCommentDto)">
             <summary>
             ایجاد یک نظر جدید
@@ -64,11 +78,19 @@
             </summary>
             <returns>پیام مناسب برای ویرایش شدن یا نشدن نظر.</returns>
         </member>
-        <member name="M:TaskManager.Controllers.ProjectController.Create(TaskManager.Models.Dto.CreateProjectDto)">
+        <member name="M:TaskManager.Controllers.CommentController.GetCommentsByTaskId(System.Int32)">
             <summary>
-            ایجاد یک پروژه جدید
+            دریافت نظرات براساس TaskId
             </summary>
-            <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
+            <param name="taskId">شناسه وظیفه</param>
+            <returns>لیست نظرات مربوط به وظیفه یا پیام مناسب در صورت خطا</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.CommentController.GetCommentsByUserId(System.Int32)">
+            <summary>
+            دریافت نظرات براساس UserId
+            </summary>
+            <param name="userId">شناسه کاربر</param>
+            <returns>لیست نظرات مربوط به کاربر یا پیام مناسب در صورت خطا</returns>
         </member>
         <member name="M:TaskManager.Controllers.ProjectController.Edit(TaskManager.Models.Dto.EditProjectDto)">
             <summary>
@@ -89,11 +111,25 @@
             </summary>
             <returns>نمایش همه پروژه ها .</returns>
         </member>
-        <member name="M:TaskManager.Controllers.ProjectController.Get(System.Int32)">
+        <member name="M:TaskManager.Controllers.ProjectController.Create(TaskManager.Models.Dto.CreateProjectDto)">
             <summary>
-            نمایش پروژه با ایدی وارد شده
+            ایجاد یک پروژه جدید
             </summary>
-            <returns>نمایش پروژه با ایدی مشخص .</returns>
+            <returns>پیام مناسب برای ایجاد شدن یا نشدن پروژه.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.ProjectController.GetProjectByUserId(System.Int32)">
+            <summary>
+            نمایش تمام پروژه های مربوط به یک کاربر.
+            </summary>
+            <param name="userId">شناسه کاربر.</param>
+            <returns>نمایش پروژه کاربر یا پیام مناسب در صورت خطا.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.ProjectController.GetProjectById(System.Int32)">
+            <summary>
+            نمایش مشخصات پروژه با استفاده از شناسه پروژه
+            </summary>
+            <param name="projectId">شناسه پروژه</param>
+            <returns>مشخصات پروژه یا پیام مناسب در صورت خطا</returns>
         </member>
         <member name="M:TaskManager.Controllers.TaskController.Create(TaskManager.Models.Dto.CreateTaskDto)">
             <summary>
@@ -189,16 +225,40 @@
             <param name="id">شناسه کاربر مورد نظر.</param>
             <returns>پیام موفقیت آمیز یا پیام خطا در صورت وقوع مشکل.</returns>
         </member>
-        <member name="T:TaskManager.Migrations.Initial">
+        <member name="M:TaskManager.Controllers.UserController.GetAllDisabledUsers(TaskManager.Models.Dto.PaginationParameters)">
+            <summary>
+            دریافت لیستی از کاربران **غیر فعال** با صفحه‌بندی.
+            </summary>
+            <returns>لیست کاربران غیر فعال به همراه اطلاعات صفحه‌بندی.</returns>
+        </member>
+        <member name="M:TaskManager.Controllers.UserController.GetAllActiveUsers(TaskManager.Models.Dto.PaginationParameters)">
+            <summary>
+            دریافت لیستی از کاربران ** فعال** با صفحه‌بندی.
+            </summary>
+            <returns>لیست کاربران  فعال به همراه اطلاعات صفحه‌بندی.</returns>
+        </member>
+        <member name="T:TaskManager.Migrations.initail">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:TaskManager.Migrations.initail.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:TaskManager.Migrations.initail.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:TaskManager.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:TaskManager.Migrations.initail.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:TaskManager.Migrations.fixproject">
+            <inheritdoc />
+        </member>
+        <member name="M:TaskManager.Migrations.fixproject.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TaskManager.Migrations.fixproject.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:TaskManager.Migrations.fixproject.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="P:TaskManager.Models.Dto.ChangePassword.Id">
@@ -256,7 +316,7 @@
             ایدی کاربر
             </summary> 
         </member>
-        <member name="P:TaskManager.Models.Dto.CommentViewModel.ProjectId">
+        <member name="P:TaskManager.Models.Dto.CommentViewModel.TaskId">
             <summary>
             ایدی پروژه
             </summary> 
@@ -479,6 +539,6 @@
             سطح اهمیت وظیفه
              </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "P:TaskManager.Models.Dto.TaskViewMode.UserId" -->
+        <!-- Badly formed XML comment ignored for member "P:TaskManager.Models.Dto.TaskViewMode.IsDone" -->
     </members>
 </doc>

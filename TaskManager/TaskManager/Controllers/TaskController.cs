@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using TaskManager.Models;
 using TaskManager.Models.Dto;
-using TaskManager.Models.Entity;
 
 namespace TaskManager.Controllers
 {
@@ -27,15 +26,53 @@ namespace TaskManager.Controllers
         /// </summary>
         /// <returns>پیام مناسب برای ایجاد شدن یا نشدن وظیفه.</returns>
         [HttpPost("create")]
+        
         public IActionResult Create(CreateTaskDto task)
         {
             dynamic result = new JObject();
             try
             {
-
-                var newTask = new Models.Entity.Task(task.Name, task.Description, task.ExpireTaskTime, 
+             var newTask = new Models.Entity.Task(task.Name, task.Description, task.ExpireTaskTime, 
                     task.PrioritySet,task.UserId,task.ProjectId);
 
+            if (ModelState.IsValid == false)
+            {
+                result.message = "لطفا فیلد ها را بدرستی پر کنید";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            var allUsers = _context.Users.Count();
+            if (newTask.UserId == 0 || newTask.UserId > allUsers || newTask.UserId < 0 )
+            {
+                result.message = "شناسه کاربر بدرستی وارد نشده است";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            var allProjects = _context.Projects.Count();
+            if (newTask.ProjectId > allProjects || newTask.ProjectId < 0)
+            {
+                result.message = "شناسه پروژه بدرستی وارد نشده است";
+                result.success = false;
+                return BadRequest(result);
+            }
+            
+            var project_id = _context.UserProjects.FirstOrDefault((f=>f.ProjectId==task.ProjectId && 
+                                 f.UserId==task.UserId));
+                if (project_id == null)
+                {
+                    result.message = "کاربر در پروژه وجود ندارد";
+                    result.success = false;
+                    return BadRequest(result);
+                }
+                // var check_userIdd = _context.UserProjects.FirstOrDefault(s=>s.UserId==check_userId);
+                // if (check_userIdd == null )
+                // {
+                //     result.message = "کاربر در پروژه وجود ندارد";
+                //     result.success = false;
+                // }
+                
                 _context.Tasks.Add(newTask);
                 _context.SaveChanges();
 
@@ -298,6 +335,6 @@ namespace TaskManager.Controllers
 
             return Ok(result);
         }
-
+        
     }
 }
