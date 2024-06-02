@@ -29,7 +29,24 @@ namespace TaskManager.Controllers
         public IActionResult create([FromForm] CreateChatDto chat)
         {
             dynamic result = new JObject();
-        
+
+
+            var allUsers = _context.Users.Count();
+            var allProjects = _context.Projects.Count();
+
+            if (chat.UserID > allUsers || chat.UserID < 0)
+            {
+                result.message = "شناسه کاربر بدرستی وارد نشده";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            if (chat.ProjectId > allProjects || chat.ProjectId < 0)
+            {
+                result.message = "شناسه پروژه بدرستی وارد نشده است";
+                result.success = false;
+                return BadRequest(result);
+            }
             try
             {
                 if (chat == null)
