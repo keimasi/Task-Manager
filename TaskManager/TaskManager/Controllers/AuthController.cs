@@ -152,6 +152,20 @@ namespace TaskManager.Controllers
                 return BadRequest(result);
             }
 
+            if (model.UserName == "" || model.UserName == " " || model.UserName.IsNullOrEmpty())
+            {
+                result.message = "نام کاربری را کامل کنید";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            if (model.Password.Length <= 1)
+            {
+                result.message = "رمز عبور باید حداقل 2 کاراکتر باشد";
+                result.success = false;
+                return BadRequest(result);
+            }
+
             if (model.Password != model.PasswordConfirm)
             {
                 result.message = "رمز عبور با یکدیگر مطابقت ندارند";
