@@ -163,6 +163,30 @@ namespace TaskManager.Controllers
         {
             dynamic result = new JObject();
 
+            var allUsers = _context.Users.Count();
+            foreach (var userId in project.UserIds)
+            {
+                if (userId > allUsers || userId < 0)
+                {
+                    result.message = "   شناسه کاربر یا کاربران بدرستی وارد نشده است";
+                    result.success = false;
+                    return BadRequest(result);
+                }
+            }
+
+            if (project.EndTime < DateTime.Now)
+            {
+                result.message = " تاریخ بدرستی وارد نشده است";
+                result.success = false;
+                return BadRequest(result);
+            }
+
+            if (project.Name == null || project.Name == "" || project.Name == " ")
+            {
+                result.message = " نام پروژه بدرستی وارد نشده است";
+                result.success = false;
+                return BadRequest(result);
+            }
             if (project == null)
             {
                 result.message = "اطلاعات پروژه نادرست است";
